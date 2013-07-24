@@ -1,5 +1,5 @@
 require "vws/version"
 
-module vws
+module Vws
   # Your code goes here...
 end
