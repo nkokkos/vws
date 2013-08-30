@@ -2,6 +2,8 @@ require "vws/version"
 require 'rubygems'
 require 'hmac-sha1'
 require 'rest_client'
+require 'digest/md5'
+
 
 module Vws
   
@@ -16,7 +18,7 @@ module Vws
       @secret  = key || ENV['VWS_SECRET']
     end
 
-	def build_signature(request, secret_key)
+	def build_signature(full_path, request, secret_key)
       contentType = "";
 	  hexDigest = "d41d8cd98f00b204e9800998ecf8427e" # Hex digest of an empty string	  
 	  
@@ -25,7 +27,7 @@ module Vws
 	  elsif request == "POST" || request === "PUT" 
 	    contentType = "application/json";
 		#the request should have a request body
-		hexDigest = createMD5Hash(request);
+		hexDigest = Digest::MD5.hexdigest(full_path)
 		else 
 		  puts "Invalid content type";
 	   end
