@@ -3,7 +3,7 @@ require 'rubygems'
 require 'hmac-sha1'
 require 'rest_client'
 require 'digest/md5'
-
+require 'time'
 
 module Vws
   
@@ -41,7 +41,8 @@ module Vws
 	end
 	
     def timestamp
-      return Time.now.utc.strftime("%Y%m%d%H%M%S")
+	  #Date is the current date per RFC 2616, section 3.3.1, rfc1123-date format, e.g.: Sun, 22 Apr #2012 08:49:37 GMT.
+      return Time.now.httpdate
     end
 
   end
