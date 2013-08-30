@@ -15,7 +15,7 @@ module Vws
 
     def initialize(key=nil, secret=nil)
       @key     = key || ENV['VWS_KEY']
-      @secret  = key || ENV['VWS_SECRET']
+      @secret  = secret || ENV['VWS_SECRET']
     end
 
 	def build_signature(full_path, request, secret_key)
