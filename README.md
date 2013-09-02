@@ -1,6 +1,6 @@
 # Vws
 
-TODO: Write a gem description
+This is a ruby gem to interact with Vuforia web services api. Work is in progress
 
 ## Installation
 
