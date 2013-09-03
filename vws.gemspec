@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Vws::VERSION
   spec.authors       = ["Nick Kokkos"]
   spec.email         = ["nkokkos@gmail.com"]
-  spec.description   = %q{A gem to interact with web services}
+  spec.description   = %q{a gem to interact with Vuforia web services api}
   spec.summary       = %q{Web service gem}
   spec.homepage      = ""
   spec.license       = "MIT"
@@ -27,7 +27,6 @@ Gem::Specification.new do |spec|
 
   #runtime dependencies
   spec.add_runtime_dependency "rest-client", "~> 1.6.7"
-  spec.add_runtime_dependency "ruby-hmac", ">=0"
   spec.add_runtime_dependency "exifr"
 
 end
