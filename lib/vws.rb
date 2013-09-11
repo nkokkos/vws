@@ -16,8 +16,8 @@ module Vws
   class Api
   
     def initialize(accesskey=nil, secretkey=nil)
-      @accesskey = accesskey ||  ENV['VWS_ACCESSKEY']
-      @secretkey = accesskey ||  ENV['VWS_SECRETKEY']
+      @accesskey = "" ||  ENV['VWS_ACCESSKEY']
+      @secretkey = "" ||  ENV['VWS_SECRETKEY']
     end
 
     def build_signature(request_path, body_hash, http_verb, timestamp)
@@ -55,8 +55,8 @@ module Vws
 
     def upload_file
       date_timestamp = Time.now.httpdate # ruby provides this date format with httpdata method
-      contents_encoded = Base64.encode64(File.open("pnggrad8rgb.png", 'rb').read)
-      body_hash = { :name => "MyTestImage name", :width => 175.0, :image => contents_encoded, :active_flag => 1 }
+      contents_encoded = Base64.encode64(File.open("RGB_24bits.jpg", 'rb').read)
+      body_hash = { :name => "MyTestImagename2", :width => 150, :image => contents_encoded, :active_flag => 1 }
       authorization_header = "VWS " + @accesskey + ":" +  self.build_signature('/targets', body_hash, 'POST', date_timestamp)
       #puts authorization_header
       begin
