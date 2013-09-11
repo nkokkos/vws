@@ -8,16 +8,14 @@ describe Vws do
       puts response
     end
 
-=begin   	
-	describe "should connect to webservice and upload file" do
+   	
+  describe "should connect to webservice and upload file" do
     conn = Vws::Api.new
-	puts conn.inspect
-	response = conn.upload_file
-	puts response
-	end
-=end
+    #puts conn.inspect
+    response = conn.upload_file
+    puts response
+  end
 
- 	
   describe "should connect to webservice and show summary" do
     conn = Vws::Api.new
     #puts conn.inspect
