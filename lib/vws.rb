@@ -6,6 +6,7 @@ require 'time'
 require 'openssl'
 require 'base64'
 require 'json'
+require 'yaml'
 
 module Vws
   #constants for end point interface links
@@ -16,8 +17,8 @@ module Vws
   class Api
   
     def initialize(accesskey=nil, secretkey=nil)
-      @accesskey = "" ||  ENV['VWS_ACCESSKEY']
-      @secretkey = "" ||  ENV['VWS_SECRETKEY']
+      @accesskey = accesskey || ENV['VWS_ACCESSKEY']
+      @secretkey = secretkey || ENV['VWS_SECRETKEY']
     end
 
     def build_signature(request_path, body_hash, http_verb, timestamp)
