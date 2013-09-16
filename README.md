@@ -8,13 +8,13 @@ Clone this repo onto your hard drive
 
 Build the gem by issuing:
 
-   rake build
+    rake build
 
-This is build the vws.gem in the pkg folder
+This is build the vws.gem in the pkg folder.
 
 Install the gem from the pkg folder by:
 
-   gem install vws.gem
+    gem install vws.gem
 
 
 ## Basic Installation using Gemfile: 
