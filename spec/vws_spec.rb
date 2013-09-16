@@ -1,7 +1,7 @@
 require_relative '../lib/vws.rb'
 
 describe Vws do
-
+=begin
   describe "should connect to webservice and fail otherwise" do
     YAML.load(File.open('spec/local_env.yml')).each do |key, value|
       ENV[key.to_s] = value
@@ -9,13 +9,14 @@ describe Vws do
        if defined?(ENV['VWS_ACCESSKEY']) && defined?(ENV['VWS_SECRETKEY'])
          conn = Vws::Api.new(ENV['VWS_ACCESSKEY'], ENV['VWS_SECRETKEY'])
          conn.inspect
-         puts conn.list_targets
+         #puts conn.list_targets
          else
-         puts "ENV['VWS_ACCESSKEY']  && ENV['VWS_SECRETKEY' not defined"
+         puts "ENV['VWS_ACCESSKEY'] && ENV['VWS_SECRETKEY' not defined"
        end
     end
 
-=begin
+
+begin
 
   describe "should connect to webservice, upload file and fail if the file name is the same" do
     conn = Vws::Api.new
@@ -25,16 +26,18 @@ describe Vws do
     puts response
   end
 
+=end 
 
   describe "should connect to webservice and show summary" do
-    conn = Vws::Api.new
-    #puts conn.inspect
-	puts "---conn.summary------- \n"
+    conn = Vws::Api.new("nosuchaccesskey", "nosuchsecretkey")
+    puts conn.inspect
+    puts "---conn.summary------- \n"
     response = conn.summary
-    puts response + "\n"
+    parsed = JSON.parse(response)
+    puts parsed["result_code"]
+    puts parsed.class
+    puts parsed.inspect   
   end
-  
-=end
  
 end
 
