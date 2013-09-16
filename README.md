@@ -10,7 +10,7 @@ Build the gem by issuing:
 
     rake build
 
-This is build the vws.gem in the pkg folder.
+This will build the vws.gem into the pkg folder.
 
 Install the gem from the pkg folder by:
 
@@ -31,9 +31,19 @@ Or install it yourself as:
 
     $ gem install vws
 
+
 ## Usage
 
 TODO: Write usage instructions here
+
+
+## Spec
+
+Run the specs at the root of the folder by issuing:
+
+    rspec spec
+
+Currently, only very basic specs have bee written
 
 ## Contributing
 
