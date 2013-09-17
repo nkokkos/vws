@@ -15,28 +15,31 @@ describe Vws do
        end
     end
 
+=end 
 
-begin
 
   describe "should connect to webservice, upload file and fail if the file name is the same" do
-    conn = Vws::Api.new
-    #puts conn.inspect
-     puts "---conn.upload_file------- \n"
-    response = conn.upload_file
+    conn = Vws::Api.new("nosuchaccesskey", "nosuchaccesskey")
+    puts "---conn.upload_file------- \n"
+    response = conn.add_target("MyNewTargetName", "RGB_24bits.jpg", 150, true)
     puts response
   end
 
-=end 
-
+  
+   describe "retrieve target" do
+    conn = Vws::Api.new("nosuchaccesskey", "nosuchaccesskey")
+    puts "---conn.retrieve_target------- \n"
+    response = conn.retrieve_target("target_id_goes_here")
+    puts response
+  end
+  
   describe "should connect to webservice and show summary" do
     conn = Vws::Api.new("nosuchaccesskey", "nosuchsecretkey")
-    puts conn.inspect
     puts "---conn.summary------- \n"
     response = conn.summary
     parsed = JSON.parse(response)
-    puts parsed["result_code"]
-    puts parsed.class
-    puts parsed.inspect   
+    puts parsed
+    puts "Result:" + parsed["result_code"]   
   end
  
 end

@@ -70,11 +70,11 @@ module Vws
       end
     end
 
-    def add_target(file_path, width, active_flag)
+    def add_target(target_name, file_path, width, active_flag)
       date_timestamp = Time.now.httpdate 
       #for file uploads, read file contents data and Base 64 encode it.
       contents_encoded = Base64.encode64(File.open(file_path, 'rb').read)
-      body_hash = { :name => file_name, 
+      body_hash = { :name => target_name, 
                     :width => width, #widths should be in scene units 
                     :image => contents_encoded, 
                     :active_flag => active_flag }
@@ -105,8 +105,8 @@ module Vws
 
     def retrieve_target(target_id)
       date_timestamp = Time.now.httpdate
-      target_id_url = TARGETS_URL + target_id
-      target_id_suburl = '/targets/' + target_id
+      target_id_url = TARGETS_URL + '/' + target_id
+      target_id_suburl = '/targets' + '/' + target_id
       signature = self.build_signature(target_id_suburl, nil, 'GET', date_timestamp)
       authorization_header = "VWS " + @accesskey + ":" + signature
       begin
