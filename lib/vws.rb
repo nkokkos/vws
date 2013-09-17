@@ -103,19 +103,33 @@ module Vws
       end
     end
 
-    def retrieve_target(target_id)
+    def delete_target(target_id)
+      #In order to delete the target, we have to set it to non-active.
+      #First we post a PUT/POST action to the target url and update the target's 
+      #active_flag to false. Then we post a delete action to delete the
+      #target
       date_timestamp = Time.now.httpdate
       target_id_url = TARGETS_URL + '/' + target_id
       target_id_suburl = '/targets' + '/' + target_id
-      signature = self.build_signature(target_id_suburl, nil, 'GET', date_timestamp)
+      body_hash = {:active_flag => 0}
+      signature = self.build_signature(target_id_suburl, body_hash, 'PUT', date_timestamp)
       authorization_header = "VWS " + @accesskey + ":" + signature
+      
       begin
-        RestClient.get(target_id_url, :'Date' => date_timestamp, 
-                                      :'Authorization' => authorization_header)
+        response = RestClient.post(target_id_url, body_hash.to_json, 
+                                      :'Date' => date_timestamp, 
+                                      :'Authorization' => authorization_header, 
+                                      :content_type => 'application/json', 
+                                      :accept => :json))
+        json_response = JSON.parse(response)
+        if json_response["result_code"] == "Success"
+          #call api again to delete target, implement this later on
+        end
         rescue => e
           e.response
       end
     end
 
+  
   end
 end
