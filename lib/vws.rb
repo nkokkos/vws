@@ -117,33 +117,48 @@ module Vws
       end
     end
 
-    def delete_target(target_id)
-      #In order to delete the target, we have to set it to non-active.
-      #First we post a PUT/POST action to the target url and update the target's 
-      #active_flag to false. Then we post a delete action to delete the
-      #target
+    def set_active_flag(target_id, active_flag)
       date_timestamp = Time.now.httpdate
       target_id_url = TARGETS_URL + '/' + target_id
       target_id_suburl = '/targets' + '/' + target_id
-      body_hash = {:active_flag => 0}
+      body_hash = {:active_flag => active_flag}
       signature = self.build_signature(target_id_suburl, body_hash, 'PUT', date_timestamp)
       authorization_header = "VWS " + @accesskey + ":" + signature
-      
+     
       begin
-        response = RestClient.post(target_id_url, body_hash.to_json, 
+       resp = RestClient.put(target_id_url, body_hash.to_json, 
                                       :'Date' => date_timestamp, 
                                       :'Authorization' => authorization_header, 
                                       :content_type => 'application/json', 
-                                      :accept => :json))
-        json_response = JSON.parse(response)
-        if json_response["result_code"] == "Success"
-          #call api again to delete target, implement this later on
-        end
-        rescue => e
+                                      :accept => :json)
+      rescue => e
           e.response
+      end  
+    end
+
+    def delete_target(target_id)
+      #In order to delete the target, we have to set it to non-active.
+      #First we post a PUT action to the target url and update the target's 
+      #active_flag to false. Then we post a delete action to delete the
+      #target
+      resp = self.set_active_flag(target_id, false)
+      json_resp = JSON.parse(resp)
+      puts json_resp["result_code"] 
+      if json_resp["result_code"] == "Success"
+       # begin
+          date_timestamp = Time.now.httpdate
+          target_id_url = TARGETS_URL + '/' + target_id
+          target_id_suburl = '/targets' + '/' + target_id
+          signature = self.build_signature(target_id_suburl, body_hash, 'PUT', date_timestamp)
+          authorization_header = "VWS " + @accesskey + ":" + signature
+          
+          RestClient.delete(target_id_url, :'Date' => date_timestamp,
+                                           :'Authorization' => authorization_header)        
+        #rescue => e
+        #  e.response
+        #end
       end
     end
 
-  
   end
 end
