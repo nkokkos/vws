@@ -117,6 +117,7 @@ module Vws
       end
     end
 
+    
     def set_active_flag(target_id, active_flag)
       date_timestamp = Time.now.httpdate
       target_id_url = TARGETS_URL + '/' + target_id
@@ -141,22 +142,23 @@ module Vws
       #First we post a PUT action to the target url and update the target's 
       #active_flag to false. Then we post a delete action to delete the
       #target
-      resp = self.set_active_flag(target_id, false)
-      json_resp = JSON.parse(resp)
-      puts json_resp["result_code"] 
-      if json_resp["result_code"] == "Success"
-       # begin
+      target_info = JSON.parse(retrieve_target(target_id))
+      if target_info["target_record"]["active_flag"] = "true" &&  
+        target_info["target_record"]["status"] != "processing" 
+        self.set_active_flag(target_id, false)
+      elsif target_info["target_record"]["active_flag"] = "false" && 
+        target_info["target_record"]["status"] == "success"
+        begin
           date_timestamp = Time.now.httpdate
           target_id_url = TARGETS_URL + '/' + target_id
           target_id_suburl = '/targets' + '/' + target_id
-          signature = self.build_signature(target_id_suburl, body_hash, 'PUT', date_timestamp)
+          signature = self.build_signature(target_id_suburl, nil, 'DELETE', date_timestamp)
           authorization_header = "VWS " + @accesskey + ":" + signature
-          
           RestClient.delete(target_id_url, :'Date' => date_timestamp,
-                                           :'Authorization' => authorization_header)        
-        #rescue => e
-        #  e.response
-        #end
+                                             :'Authorization' => authorization_header)        
+        rescue => e
+          e.response
+        end
       end
     end
 
