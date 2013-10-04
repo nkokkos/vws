@@ -2,8 +2,8 @@ require_relative '../lib/vws.rb'
 
 describe Vws do
 
-  VWS_ACCESSKEY = "VWS_ACCESSKEY" 
-  VWS_SECRETKEY = "VWS_SECRETKEY" 
+  VWS_ACCESSKEY = "" 
+  VWS_SECRETKEY = "" 
 
 =begin
   describe "should connect to webservice and fail otherwise" do
@@ -51,15 +51,22 @@ describe Vws do
   
   describe "should retrieve target info" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "---conn.retrieve_target     903cdcdd8d4c4c32a7c027d2d151b57b------- \n"
-    response = conn.retrieve_target("903cdcdd8d4c4c32a7c027d2d151b57b")
+    puts "---conn.retrieve_target     04007f1212b24ff79dbe09b1eb693401------- \n"
+    response = conn.retrieve_target("04007f1212b24ff79dbe09b1eb693401")
     puts response
   end
   
   describe "delete target" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "---conn.delete_target  721151f5bdf044dc9aefb0a33c3d6560------- \n"
-    response = conn.delete_target("903cdcdd8d4c4c32a7c027d2d151b57b")
+    puts "---conn.delete_target  04007f1212b24ff79dbe09b1eb693401------- \n"
+    response = conn.delete_target("04007f1212b24ff79dbe09b1eb693401")
+    puts response
+  end
+  
+   describe "set active to false" do
+    conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
+    puts "---set active to false 04007f1212b24ff79dbe09b1eb693401------- \n"
+    response = conn.set_active_flag("04007f1212b24ff79dbe09b1eb693401", false)
     puts response
   end
   

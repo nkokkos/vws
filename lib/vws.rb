@@ -139,35 +139,36 @@ module Vws
 
     def delete_target(target_id)
       #In order to delete the target, we have to set it to non-active.
-      #First we post a PUT action to the target url and update the target's 
-      #active_flag to false. Then we post a delete action to delete the
-      #target
+      #retrieve target info
       target_data = JSON.parse(retrieve_target(target_id))  
       target_result_code = target_data["result_code"]
-      if target_result_code != "UnknownTarget"
-        target_active_flag = target_data["target_record"]["active_flag"]
-        target_status = target_data["status"]
-        if target_result_code == "Success"
-          if target_active_flag == true && target_status == "success"
-            set_active_flag(target_id, "false")
-          elsif target_active_flag == false && target_status == "success"
-            date_timestamp = Time.now.httpdate
-            target_id_url = TARGETS_URL + '/' + target_id
-            target_id_suburl = '/targets' + '/' + target_id
-            signature = self.build_signature(target_id_suburl, nil, 'DELETE', date_timestamp)
-            authorization_header = "VWS " + @accesskey + ":" + signature
-              begin
-                RestClient.delete(target_id_url, :'Date' => date_timestamp,
+      if target_result_code!="AuthenticationFailure"
+        if target_result_code!="UnknownTarget"   
+          target_active_flag = target_data["target_record"]["active_flag"]
+          target_status = target_data["status"]
+          if target_result_code == "Success"
+            if target_active_flag == true && target_status == "success"
+              #decouple setting on/off active flag from deleting
+              #set_active_flag(target_id, "false")
+              return "target is active, set it to inactive to delete it"
+            elsif target_active_flag == false && target_status == "success"
+              date_timestamp = Time.now.httpdate
+              target_id_url = TARGETS_URL + '/' + target_id
+              target_id_suburl = '/targets' + '/' + target_id
+              signature = self.build_signature(target_id_suburl, nil, 'DELETE', date_timestamp)
+              authorization_header = "VWS " + @accesskey + ":" + signature
+                begin
+                  RestClient.delete(target_id_url, :'Date' => date_timestamp,
                                              :'Authorization' => authorization_header)
-              rescue => e
-                e.response
-              end
-		  end
-        else
-          target_status
+                rescue => e
+                  e.response
+                end
+            else
+             "target status:" + target_status
+            end
+          end  
         end
       end
     end
   end
- end
 end
