@@ -6,15 +6,14 @@ require 'time'
 require 'openssl'
 require 'base64'
 require 'json'
-require 'yaml'
+
 
 module Vws
   #constants for end point interface links
    BASE_URL = "https://vws.vuforia.com"
    TARGETS_URL = BASE_URL + "/targets"
    SUMMARY_URL = BASE_URL + "/summary"
-   TARGETS_URL_REQUEST_BIN = "http://requestb.in/1frt0dx1" # simple end point 
-                                                # for get/post checks
+
   class Api
   
     def initialize(accesskey=nil, secretkey=nil)
@@ -24,7 +23,8 @@ module Vws
 
     def build_signature(request_path, body_hash, http_verb, timestamp)
       #request path signifies the suburi called minus the BASE_URL; that is,
-      # if you call https://vws/vuforia.com/targets, the request_path="/targets"
+      #if you call https://vws/vuforia.com/targets, the request_path is 
+      #"/targets"
       
       contentType = ""
       hexDigest = "d41d8cd98f00b204e9800998ecf8427e" # Hex digest of an empty 
@@ -36,7 +36,7 @@ module Vws
       elsif http_verb == "POST" || http_verb == "PUT" 
         contentType = "application/json";
         #the request should have a request body, so create an md5 hash of that
-        #json data
+        #json body data
         hexDigest = Digest::MD5.hexdigest(body_hash.to_json)
       else 
         puts "Invalid request method";
@@ -75,13 +75,36 @@ module Vws
       #for file uploads, read file contents data and Base 64 encode it.
       contents_encoded = Base64.encode64(File.open(file_path, 'rb').read)
       body_hash = { :name => target_name, 
-                    :width => width, #widths should be in scene units 
+                    :width => width, #Width of the target in scene unit
                     :image => contents_encoded, 
                     :active_flag => active_flag }
       signature = self.build_signature('/targets', body_hash, 'POST', date_timestamp)
       authorization_header = "VWS " + @accesskey + ":" +  signature
       begin
         RestClient.post(TARGETS_URL, body_hash.to_json, 
+                                    :'Date' => date_timestamp, 
+                                    :'Authorization' => authorization_header, 
+                                    :content_type => 'application/json', 
+                                    :accept => :json)
+      rescue => e
+        e.response
+      end
+    end
+    
+    def update_target(target_id, target_name=nil, file_path=nil, width=nil, active_flag=nil)
+      date_timestamp = Time.now.httpdate
+      target_id_url = TARGETS_URL + '/' + target_id
+      target_id_suburl = '/targets' + '/' + target_id  
+      #for file uploads, read file contents data and Base 64 encode it.
+      contents_encoded = Base64.encode64(File.open(file_path, 'rb').read)
+      body_hash = { :name => target_name, 
+                    :width => width, #Width of the target in scene unit
+                    :image => contents_encoded, 
+                    :active_flag => active_flag }
+      signature = self.build_signature(target_id_suburl, body_hash, 'PUT', date_timestamp)
+      authorization_header = "VWS " + @accesskey + ":" +  signature
+      begin
+        RestClient.put(target_id_url, body_hash.to_json, 
                                     :'Date' => date_timestamp, 
                                     :'Authorization' => authorization_header, 
                                     :content_type => 'application/json', 
@@ -127,7 +150,7 @@ module Vws
       authorization_header = "VWS " + @accesskey + ":" + signature
      
       begin
-       resp = RestClient.put(target_id_url, body_hash.to_json, 
+        RestClient.put(target_id_url, body_hash.to_json, 
                                       :'Date' => date_timestamp, 
                                       :'Authorization' => authorization_header, 
                                       :content_type => 'application/json', 
@@ -150,7 +173,7 @@ module Vws
             if target_active_flag == true && target_status == "success"
               #decouple setting on/off active flag from deleting
               #set_active_flag(target_id, "false")
-              return "target is active, set it to inactive to delete it"
+              return {:result_code => "TargetActive"}.to_json
             elsif target_active_flag == false && target_status == "success"
               date_timestamp = Time.now.httpdate
               target_id_url = TARGETS_URL + '/' + target_id

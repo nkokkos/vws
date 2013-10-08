@@ -2,8 +2,9 @@ require_relative '../lib/vws.rb'
 
 describe Vws do
 
-  VWS_ACCESSKEY = "" 
-  VWS_SECRETKEY = "" 
+  VWS_ACCESSKEY = ""
+  VWS_SECRETKEY = ""
+  
 
 =begin
   describe "should connect to webservice and fail otherwise" do
@@ -58,8 +59,8 @@ describe Vws do
   
   describe "delete target" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "---conn.delete_target  04007f1212b24ff79dbe09b1eb693401------- \n"
-    response = conn.delete_target("04007f1212b24ff79dbe09b1eb693401")
+    puts "---conn.delete_target  43f84a93c3fe444590e55074d95f57d0------- \n"
+    response = conn.delete_target("43f84a93c3fe444590e55074d95f57d0")
     puts response
   end
   
