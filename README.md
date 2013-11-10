@@ -6,7 +6,11 @@ This is a ruby gem to interact with Vuforia web services api. Work is in progres
 
 Clone this repo onto your hard drive
 
-Build the gem by issuing:
+Install bundler gem by issuing:
+
+    gem install bundler
+
+Build the gem by:
 
     rake build
 
