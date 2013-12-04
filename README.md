@@ -38,7 +38,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+TODO: Write more usage instructions here
 
 
 ## Spec
