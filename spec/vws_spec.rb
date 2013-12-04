@@ -2,8 +2,8 @@ require_relative '../lib/vws.rb'
 
 describe Vws do
 
-  VWS_ACCESSKEY = ""
-  VWS_SECRETKEY = ""
+  VWS_ACCESSKEY = "your_vws_access_key"
+  VWS_SECRETKEY = "your_vws_secret_key"
   
 
 =begin
