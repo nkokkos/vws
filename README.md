@@ -38,6 +38,12 @@ Or install it yourself as:
 
 ## Usage
 
+Instantiate a connection to the api with:
+
+    connection = Vws::Api.new("your_access_key", "your_secret_key")
+
+
+
 TODO: Write more usage instructions here
 
 
