@@ -2,10 +2,11 @@ require_relative '../lib/vws.rb'
 
 describe Vws do
 
-  VWS_ACCESSKEY = "your_vws_access_key"
-  VWS_SECRETKEY = "your_vws_secret_key"
+  VWS_ACCESSKEY = "your_vws_server_access_key"
+  VWS_SECRETKEY = "your_vws_server_secret_key"
+ 
   
-
+#code below between begin and end was an attempt to read env variables from file
 =begin
   describe "should connect to webservice and fail otherwise" do
     YAML.load(File.open('spec/local_env.yml')).each do |key, value|
@@ -21,53 +22,64 @@ describe Vws do
     end
 =end 
 
-
-  describe "should connect to webservice, list_targets" do
-    conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "---conn.list_targets------- \n"
-    response = conn.list_targets
-    puts response
-  end
-
-  describe "should connect to webservice, upload file and fail if the file name is the same" do
-    conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "---conn.add_target------- \n"
-    response = conn.add_target("newtargetname", "spec/RGB_24bits.jpg", 150, true)
-    puts response
-  end
-  
-    describe "should connect to webservice, upload file and fail if the file name is the same" do
-    conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "---conn.add_target------- \n"
-    response = conn.add_target("newtargetname5", "spec/RGB_24bits.jpg", 150, true)
-    puts response
-  end
-    
   describe "should connect to webservice and show summary of the cloud database" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "---conn.summary------- \n"
+    puts "Summary of the target database: \n"
     response = conn.summary
     puts response
   end
-  
-  describe "should retrieve target info" do
+
+  puts "\n"
+
+  describe "should connect to webservice and list all targets" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "---conn.retrieve_target     04007f1212b24ff79dbe09b1eb693401------- \n"
-    response = conn.retrieve_target("04007f1212b24ff79dbe09b1eb693401")
+    puts "Targets in remote database: \n"
+    response = conn.list_targets
     puts response
   end
+    
+    puts "\n"
+
+  describe "should connect to webservice, upload file and fail if the file name is the same" do
+    conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
+    puts "Response after trying to add a file: \n"
+    response = conn.add_target("newtargetname", "spec/RGB_24bits.jpg", 150, true)
+    puts response
+  end
+    
+   puts "\n"
   
+  describe "should retrieve a single target info" do
+    conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
+    puts "Info for targetid = ee408e0b9d054a04b0df85e0642494d2 \n"
+    response = conn.retrieve_target("ee408e0b9d054a04b0df85e0642494d2")
+    puts response
+  end
+     
+    puts "\n"
+ 
   describe "delete target" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "---conn.delete_target  43f84a93c3fe444590e55074d95f57d0------- \n"
-    response = conn.delete_target("43f84a93c3fe444590e55074d95f57d0")
+    puts "What happens if try to delete a file with targetid =  ee408e0b9d054a04b0df85e0642494d2 ?: \n"
+    response = conn.delete_target("ee408e0b9d054a04b0df85e0642494d2")
     puts response
   end
-  
+    
+    puts "\n"
+   
    describe "set active to false" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "---set active to false 04007f1212b24ff79dbe09b1eb693401------- \n"
-    response = conn.set_active_flag("04007f1212b24ff79dbe09b1eb693401", false)
+    puts "Set target to false for targetid = ee408e0b9d054a04b0df85e0642494d2 \n"
+    response = conn.set_active_flag("ee408e0b9d054a04b0df85e0642494d2", false)
+    puts response
+  end
+    
+    puts "\n"
+   
+   describe "should connect to webservice, upload Pitt picture and fail if the file name is the same" do
+    conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
+    puts "Add Brat Pitt Picture: \n"
+    response = conn.add_target("pitt", "spec/pitt.jpg", 210, true)
     puts response
   end
   

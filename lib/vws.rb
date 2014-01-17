@@ -22,9 +22,9 @@ module Vws
     end
 
     def build_signature(request_path, body_hash, http_verb, timestamp)
-      #request path signifies the suburi called minus the BASE_URL; that is,
-      #if you call https://vws/vuforia.com/targets, the request_path is 
-      #"/targets"
+      # request_path signifies the suburi you call after you subtract the 
+      # BASE_URL; that is, if you call https://vws/vuforia.com/targets, 
+      # the request_path is '/targets' 
       
       contentType = ""
       hexDigest = "d41d8cd98f00b204e9800998ecf8427e" # Hex digest of an empty 
@@ -32,21 +32,21 @@ module Vws
                                                      # signify empty body
 
       if http_verb == "GET" || http_verb == "DELETE" 
-        #Do nothing since we have already set contentType and hexDigest
+        # Do nothing since we have already set contentType and hexDigest
       elsif http_verb == "POST" || http_verb == "PUT" 
         contentType = "application/json";
-        #the request should have a request body, so create an md5 hash of that
-        #json body data
+        # the request should have a request body, so create an md5 hash of that
+        # json body data
         hexDigest = Digest::MD5.hexdigest(body_hash.to_json)
       else 
         puts "Invalid request method";
         return nil
       end
       
-      toDigest  = http_verb   +   "\n" + 
-                  hexDigest   +   "\n" + 
-                  contentType +   "\n" + 
-                  timestamp   +   "\n" + 
+      toDigest  = http_verb   + "\n" +
+                  hexDigest   + "\n" +
+                  contentType + "\n" +
+                  timestamp   + "\n" +
                   request_path
 
       return Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, 
@@ -54,7 +54,7 @@ module Vws
     end
 
     # Calls the api end point for the list of targets associated with 
-    # access key and database
+    # server access key and cloud database
     def list_targets
       #Date is the current date per RFC 2616, section 3.3.1, 
       #rfc1123-date format, e.g.: Sun, 22 Apr #2012 08:49:37 GMT.
@@ -72,10 +72,10 @@ module Vws
 
     def add_target(target_name, file_path, width, active_flag)
       date_timestamp = Time.now.httpdate 
-      #for file uploads, read file contents data and Base 64 encode it.
+      #for file uploads, read file contents data and Base 64 encode it:
       contents_encoded = Base64.encode64(File.open(file_path, 'rb').read)
       body_hash = { :name => target_name, 
-                    :width => width, #Width of the target in scene unit
+                    :width => width, #width of the target in scene units
                     :image => contents_encoded, 
                     :active_flag => active_flag }
       signature = self.build_signature('/targets', body_hash, 'POST', date_timestamp)
@@ -95,7 +95,7 @@ module Vws
       date_timestamp = Time.now.httpdate
       target_id_url = TARGETS_URL + '/' + target_id
       target_id_suburl = '/targets' + '/' + target_id  
-      #for file uploads, read file contents data and Base 64 encode it.
+      #for file uploads, read file contents data and Base 64 encode it:
       contents_encoded = Base64.encode64(File.open(file_path, 'rb').read)
       body_hash = { :name => target_name, 
                     :width => width, #Width of the target in scene unit
@@ -161,20 +161,22 @@ module Vws
     end
 
     def delete_target(target_id)
-      #In order to delete the target, we have to set it to non-active.
-      #retrieve target info
-      target_data = JSON.parse(retrieve_target(target_id))  
+      # In order to delete the target, we have to set it to non-active.
+      # Therefore,first retrieve target info and act accordingly to target info
+      # returned
+      target_data = JSON.parse(retrieve_target(target_id)) # have to JSON.parse
+      # retrieve_target's results since they're in string format
       target_result_code = target_data["result_code"]
-      if target_result_code!="AuthenticationFailure"
-        if target_result_code!="UnknownTarget"   
+      if target_result_code != "AuthenticationFailure"
+        if target_result_code != "UnknownTarget"   
           target_active_flag = target_data["target_record"]["active_flag"]
           target_status = target_data["status"]
           if target_result_code == "Success"
             if target_active_flag == true && target_status == "success"
-              #decouple setting on/off active flag from deleting
-              #set_active_flag(target_id, "false")
               return {:result_code => "TargetActive"}.to_json
             elsif target_active_flag == false && target_status == "success"
+              # if we reached this point, the target is fine, inactive and 
+              # ready to be deleted
               date_timestamp = Time.now.httpdate
               target_id_url = TARGETS_URL + '/' + target_id
               target_id_suburl = '/targets' + '/' + target_id
@@ -187,11 +189,14 @@ module Vws
                   e.response
                 end
             else
-             "target status:" + target_status
+            return {:result_code => "#{target_status}"}.to_json
             end
           end  
         end
+      else
+       return {:result_code => "AuthenticationFailure"}.to_json
       end
     end
+  
   end
 end
