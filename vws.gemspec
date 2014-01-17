@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["nkokkos@gmail.com"]
   spec.description   = %q{a gem to interact with Vuforia web services api}
   spec.summary       = %q{Web service gem}
-  spec.homepage      = ""
+  spec.homepage      = "http://github.com/nkokkos/vws"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -20,14 +20,12 @@ Gem::Specification.new do |spec|
 
 
   #development depedencies
-  spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "bundler", "~> 1.5"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
-  #spec.add_development_dependency "exifr"
   spec.add_runtime_dependency "json"
 
   #runtime dependencies
   spec.add_runtime_dependency "rest-client", "~> 1.6.7"
-  spec.add_runtime_dependency "exifr"
   spec.add_runtime_dependency "json"
 end
