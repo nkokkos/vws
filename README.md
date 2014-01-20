@@ -4,13 +4,17 @@ This is a ruby gem to interact with Vuforia web services api. Work is in progres
 
 ## Installation from source
 
-Clone this repo onto your hard drive
+Clone this repo onto your hard drive and cd into the root folder
 
-Install bundler gem by issuing:
+First install bundler gem (if it is not installed) gem by issuing:
 
     gem install bundler
 
-Build the gem by:
+Install the required gems by vws gem by:
+
+    bundle install
+
+Build the vws gem by:
 
     rake build
 
@@ -23,24 +27,21 @@ Install the gem from the pkg folder by:
 
 ## Basic Installation using Gemfile: 
 
-Add this line to your application's Gemfile:
+Add this line to your rails application's Gemfile:
 
     gem 'vws'
 
 And then execute:
 
-    $ bundle
+    $ bundle install
 
-Or install it yourself as:
-
-    $ gem install vws
 
 
 ## Usage
 
 Instantiate a connection to the api with:
 
-    connection = Vws::Api.new("your_access_key", "your_secret_key")
+    connection = Vws::Api.new("your_server_vws_access_key", "your_server_vws_secret_key")
 
 
 
