@@ -43,9 +43,11 @@ uploaded the gem to rubygems.org yet
 ## Usage
 
 Instantiate a connection to the api with:
-     connection = Vws::Api.new("your_server_vws_access_key", "your_server_vws_secret_key")
 
-After that, you have access to the vuforia api as shown here https://developer.vuforia.com/resources/dev-guide/managing-targets-cloud-database-using-developer-api
+    connection = Vws::Api.new("your_server_vws_access_key", "your_server_vws_secret_key")
+
+After that, you have access to the vuforia api as shown here:
+https://developer.vuforia.com/resources/dev-guide/managing-targets-cloud-database-using-developer-api
 
 So, if you want to get a summary of the cloud database, you issue:
 
