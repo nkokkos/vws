@@ -183,18 +183,19 @@ module Vws
               signature = self.build_signature(target_id_suburl, nil, 'DELETE', date_timestamp)
               authorization_header = "VWS " + @accesskey + ":" + signature
                 begin
-                  RestClient.delete(target_id_url, :'Date' => date_timestamp,
+                  RestClient.delete(target_id_url, 
+                                             :'Date' => date_timestamp,
                                              :'Authorization' => authorization_header)
                 rescue => e
                   e.response
                 end
             else
-            return {:result_code => "#{target_status}"}.to_json
+              return {:result_code => "#{target_status}"}.to_json
             end
           end  
         end
       else
-       return {:result_code => "AuthenticationFailure"}.to_json
+        return {:result_code => "AuthenticationFailure"}.to_json
       end
     end
   
