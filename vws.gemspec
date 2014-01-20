@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Vws::VERSION
   spec.authors       = ["Nick Kokkos"]
   spec.email         = ["nkokkos@gmail.com"]
-  spec.description   = %q{a gem to interact with Vuforia web services api}
-  spec.summary       = %q{Web service gem}
+  spec.description   = %q{A ruby gem to interact with Vuforia web services api}
+  spec.summary       = %q{Vuforia Web service gem}
   spec.homepage      = "http://github.com/nkokkos/vws"
   spec.license       = "MIT"
 
@@ -21,8 +21,8 @@ Gem::Specification.new do |spec|
 
   #development depedencies
   spec.add_development_dependency "bundler", "~> 1.5"
-  spec.add_development_dependency "rake", ">= 10"
-  spec.add_development_dependency "rspec",">=2"
+  spec.add_development_dependency "rake", "~> 10.1"
+  spec.add_development_dependency "rspec","~> 2.14"
   #spec.add_development_dependency "json","~> 1.8"
 
   #runtime dependencies
