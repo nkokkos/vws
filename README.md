@@ -1,6 +1,6 @@
 # Vws (Vuforia Web Services ruby gem for API access)
 
-This is a ruby gem to interact with Vuforia web services api:
+This is a ruby gem to interact with Vuforia web services api for managing the targets:
 https://developer.vuforia.com/resources/dev-guide/managing-targets-cloud-database-using-developer-api
 
 It uses the excellent rest-client (https://github.com/rest-client/rest-client) to handle the
@@ -95,6 +95,9 @@ of the folder by issuing:
 
     rspec spec
 
+## To do:
+
+  Implement some of the new vws apis and write better documentation :-)
 
 
 ## Contributing
