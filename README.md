@@ -3,11 +3,16 @@
 This is a ruby gem to interact with Vuforia web services api:
 https://developer.vuforia.com/resources/dev-guide/managing-targets-cloud-database-using-developer-api
 
+It uses the excellent rest-client (https://github.com/rest-client/rest-client) to handle the
+HTTP/REST requests required by the Vuforia Web Services API.
+
 ## Installation from source
 
-Clone this repo onto your hard drive and cd into the root folder
 
-First install bundler gem (if it is not installed) gem by issuing:
+Clone this repo onto your hard drive and cd into the root folder.
+
+
+First install bundler gem (if it is not installed) by issuing:
 
     gem install bundler
 
@@ -21,6 +26,7 @@ Build the vws gem by:
 
 This will build the vws.gem into the pkg folder.
 
+
 Install the gem from the pkg folder by:
 
     gem install vws.gem
@@ -28,13 +34,14 @@ Install the gem from the pkg folder by:
 
 ## Basic Installation using rails Gemfile: 
 
+
 Add this line to your rails application's Gemfile:
 
     gem 'vws'
 
 And then execute:
 
-    $ bundle install
+    bundle install
 
 This should work if you have installed the gem from source. I have not
 uploaded the gem to rubygems.org yet
@@ -46,7 +53,7 @@ Instantiate a connection to the api with:
 
     connection = Vws::Api.new("your_server_vws_access_key", "your_server_vws_secret_key")
 
-After that, you have access to the vuforia api as shown here:
+After a successful connection, you should have access to the vuforia api as shown here:
 https://developer.vuforia.com/resources/dev-guide/managing-targets-cloud-database-using-developer-api
 
 So, if you want to get a summary of the cloud database, you issue:
