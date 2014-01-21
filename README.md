@@ -1,4 +1,4 @@
-# Vws
+# Vws (Vuforia Web Services ruby gem for API access)
 
 This is a ruby gem to interact with Vuforia web services api:
 https://developer.vuforia.com/resources/dev-guide/managing-targets-cloud-database-using-developer-api
