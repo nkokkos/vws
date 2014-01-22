@@ -2,8 +2,8 @@ require_relative '../lib/vws.rb'
 
 describe Vws do
 
-  VWS_ACCESSKEY = "your_vws_server_access_key"
-  VWS_SECRETKEY = "your_vws_server_secret_key"
+  VWS_ACCESSKEY = "your_vws_server_database_access_key"
+  VWS_SECRETKEY = "your_vws_server_database_secret_key"
  
   
 #code below between begin and end was an attempt to read env variables from file
@@ -26,7 +26,7 @@ describe Vws do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
     puts "Summary of the target database: \n"
     response = conn.summary
-    puts response
+	puts JSON.pretty_generate(JSON.parse(response))
   end
 
   puts "\n"
@@ -35,7 +35,7 @@ describe Vws do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
     puts "Targets in remote database: \n"
     response = conn.list_targets
-    puts response
+    puts JSON.pretty_generate(JSON.parse(response))
   end
     
     puts "\n"
@@ -44,7 +44,7 @@ describe Vws do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
     puts "Response after trying to add a file: \n"
     response = conn.add_target("newtargetname", "spec/RGB_24bits.jpg", 150, true)
-    puts response
+    puts JSON.pretty_generate(JSON.parse(response))
   end
     
    puts "\n"
@@ -53,16 +53,25 @@ describe Vws do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
     puts "Info for targetid = ee408e0b9d054a04b0df85e0642494d2 \n"
     response = conn.retrieve_target("ee408e0b9d054a04b0df85e0642494d2")
-    puts response
+    puts JSON.pretty_generate(JSON.parse(response))
   end
-     
+  
     puts "\n"
- 
+   
+   describe "should retrieve a summary report of a single target" do
+    conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
+    puts "Summary report targetid =  4098a76b155a4bfc9331f9ea4e858636 \n"
+    response = conn.target_summary("4098a76b155a4bfc9331f9ea4e858636")
+    puts JSON.pretty_generate(JSON.parse(response))
+  end
+  
+  puts '/n'
+  
   describe "delete target" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "What happens if try to delete a file with targetid =  ee408e0b9d054a04b0df85e0642494d2 ?: \n"
-    response = conn.delete_target("ee408e0b9d054a04b0df85e0642494d2")
-    puts response
+    puts "What happens if try to delete a file with targetid =   4098a76b155a4bfc9331f9ea4e858636 ?: \n"
+    response = conn.delete_target("4098a76b155a4bfc9331f9ea4e8536")
+    puts JSON.pretty_generate(JSON.parse(response))
   end
     
     puts "\n"
@@ -71,7 +80,7 @@ describe Vws do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
     puts "Set target to false for targetid = ee408e0b9d054a04b0df85e0642494d2 \n"
     response = conn.set_active_flag("ee408e0b9d054a04b0df85e0642494d2", false)
-    puts response
+    puts JSON.pretty_generate(JSON.parse(response))
   end
     
     puts "\n"
@@ -80,7 +89,7 @@ describe Vws do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
     puts "Add Brat Pitt Picture: \n"
     response = conn.add_target("pitt", "spec/pitt.jpg", 210, true)
-    puts response
+    puts JSON.pretty_generate(JSON.parse(response))
   end
   
 end

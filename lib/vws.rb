@@ -113,7 +113,9 @@ module Vws
         e.response
       end
     end
-
+    
+    # Database Summary Report
+    # https://developer.vuforia.com/resources/dev-guide/database-summary-report
     def summary
       date_timestamp = Time.now.httpdate
       signature = self.build_signature('/summary', nil, 'GET', date_timestamp) 
@@ -126,6 +128,8 @@ module Vws
       end
     end
     
+    # Retrieve a target from the cloud database
+    # https://developer.vuforia.com/resources/dev-guide/retrieving-target-cloud-database
     def retrieve_target(target_id)
       date_timestamp = Time.now.httpdate
       target_id_url = TARGETS_URL + '/' + target_id
@@ -140,7 +144,22 @@ module Vws
       end
     end
 
-    
+    # Target Summary Report
+    # https://developer.vuforia.com/resources/dev-guide/target-summary-report
+    def target_summary(target_id)
+      date_timestamp = Time.now.httpdate
+      target_id_url = SUMMARY_URL + '/' + target_id
+      target_id_suburl = '/summary' + '/' + target_id
+      signature = self.build_signature(target_id_suburl, nil, 'GET', date_timestamp)
+      authorization_header = "VWS " + @accesskey + ":" + signature
+      begin
+        RestClient.get(target_id_url, :'Date' => date_timestamp,
+                                      :'Authorization' => authorization_header)
+      rescue => e
+        e.response
+      end      
+    end
+
     def set_active_flag(target_id, active_flag)
       date_timestamp = Time.now.httpdate
       target_id_url = TARGETS_URL + '/' + target_id
@@ -160,6 +179,8 @@ module Vws
       end
     end
 
+    # Delete a target in a cloud database
+    # https://developer.vuforia.com/resources/dev-guide/deleting-target-cloud-database
     def delete_target(target_id)
       # In order to delete the target, we have to set it to non-active.
       # Therefore,first retrieve target info and act accordingly to target info
@@ -193,6 +214,8 @@ module Vws
               return {:result_code => "#{target_status}"}.to_json
             end
           end  
+        else
+          return {:result_code => "UnknownTarget"}.to_json
         end
       else
         return {:result_code => "AuthenticationFailure"}.to_json
