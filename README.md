@@ -6,7 +6,7 @@ https://developer.vuforia.com/resources/dev-guide/managing-targets-cloud-databas
 It uses the excellent rest-client (https://github.com/rest-client/rest-client) to handle the
 HTTP/REST requests required by the Vuforia Web Services API.
 
-## Installation from source
+## Installation from source:
 
 
 Clone this repo onto your hard drive and cd into the root folder.
@@ -43,8 +43,12 @@ And then execute:
 
     bundle install
 
-This should work if you have installed the gem from source. I have not
-uploaded the gem to rubygems.org yet
+
+The gem has been uploaded to rubygems.org, therefore you can simply issue:
+
+    gem install vws 
+    
+and you'll be set.
 
 
 ## Usage
