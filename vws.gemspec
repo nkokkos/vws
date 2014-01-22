@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Vws::VERSION
   spec.authors       = ["Nick Kokkos"]
   spec.email         = ["nkokkos@gmail.com"]
-  spec.description   = %q{A ruby gem to interact with Vuforia web services api}
-  spec.summary       = %q{Vuforia Web service gem}
+  spec.description   = %q{Vuforia web services api gem}
+  spec.summary       = %q{This is a ruby gem that interacts with Vuforia Web service API for Cloud database management. It uses the rest-client gem to handle the http/rest requests needed}
   spec.homepage      = "http://github.com/nkokkos/vws"
   spec.license       = "MIT"
 
