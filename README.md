@@ -1,4 +1,4 @@
-# Vws (Vuforia Web Services ruby gem for API access)
+# Vws (Vuforia Web Services ruby gem for API access for target management)
 
 This is a ruby gem to interact with Vuforia web services api for managing the targets:
 https://developer.vuforia.com/resources/dev-guide/managing-targets-cloud-database-using-developer-api
@@ -44,7 +44,7 @@ And then execute:
     bundle install
 
 
-The gem has been uploaded to rubygems.org, therefore you can simply issue:
+The gem has been uploaded to rubygems.org (http://rubygems.org/gems/vws), therefore you can simply issue:
 
     gem install vws 
     
@@ -99,12 +99,24 @@ of the folder by issuing:
 
     rspec spec
 
+
+##Caveats
+
+Setting a target from on to off and vice versa takes some time. It may take up to
+0-10 minutes and it's based on Vuforia's infrastucture. It is your responsibilty 
+to poll for the changes on the target since no such feature has been implemented
+in this gem.
+
+
+
 ## To do:
 
   Implement some of the new vws apis and write better documentation :-)
 
 
 ## Contributing
+
+Please, if you use it, report back any bugs/problems.
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
