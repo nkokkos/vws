@@ -71,6 +71,8 @@ module Vws
     end
 
     def add_target(target_name, file_path, width, active_flag)
+      raise "file path is required"   if file_path.nil?
+      raise "target name is required" if target_name.nil?
       date_timestamp = Time.now.httpdate 
       #for file uploads, read file contents data and Base 64 encode it:
       contents_encoded = Base64.encode64(File.open(file_path, 'rb').read)
