@@ -1,3 +1,6 @@
+This the developing branch where I plan to create a new version of this gem
+
+
 # Vws (Vuforia Web Services ruby gem for API access for target management)
 
 This is a ruby gem to interact with Vuforia web services api for managing the targets:
