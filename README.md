@@ -91,6 +91,10 @@ Change a target flag to inactive/active:
     
     connection.set_active_flag(target_id, active_flag), where active_flag=true/false
 
+List duplicates for target:
+
+    connection.list_duplicates(target_id)
+
 
 ## Spec
 
