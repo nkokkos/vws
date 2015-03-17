@@ -116,7 +116,7 @@ in this gem.
 ## To do:
 
   Implement some of the new vws apis and write better documentation :-)
-
+  .
 
 ## Contributing
 
