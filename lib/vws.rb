@@ -40,7 +40,7 @@ module Vws
         # json body data
         hexDigest = Digest::MD5.hexdigest(body_hash.to_json)
       else 
-        puts "Invalid request method";
+        puts "Invalid request method for signature method: " + http_verb
         return nil
       end
       
@@ -62,6 +62,9 @@ module Vws
       date_timestamp = Time.now.httpdate #ruby provides this date format 
                                          #with httpdate method
       signature = self.build_signature('/targets', nil, 'GET', date_timestamp)
+      if signature == nil
+        raise ArgumentError.new('Signature returned nil. Aborting...')
+      end
       authorization_header = "VWS " + @accesskey + ":" +  signature
       begin
         RestClient.get(TARGETS_URL, :'Date' => date_timestamp, 
