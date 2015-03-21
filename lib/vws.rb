@@ -62,9 +62,8 @@ module Vws
       date_timestamp = Time.now.httpdate #ruby provides this date format 
                                          #with httpdate method
       signature = self.build_signature('/targets', nil, 'GET', date_timestamp)
-      if signature == nil
-        raise ArgumentError.new('Signature returned nil. Aborting...')
-      end
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
+      
       authorization_header = "VWS " + @accesskey + ":" +  signature
       begin
         RestClient.get(TARGETS_URL, :'Date' => date_timestamp, 
@@ -85,6 +84,7 @@ module Vws
                     :image => contents_encoded, 
                     :active_flag => active_flag }
       signature = self.build_signature('/targets', body_hash, 'POST', date_timestamp)
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
       authorization_header = "VWS " + @accesskey + ":" +  signature
       begin
         RestClient.post(TARGETS_URL, body_hash.to_json, 
@@ -108,6 +108,7 @@ module Vws
                     :image => contents_encoded, 
                     :active_flag => active_flag }
       signature = self.build_signature(target_id_suburl, body_hash, 'PUT', date_timestamp)
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
       authorization_header = "VWS " + @accesskey + ":" +  signature
       begin
         RestClient.put(target_id_url, body_hash.to_json, 
@@ -124,7 +125,8 @@ module Vws
     # https://developer.vuforia.com/resources/dev-guide/database-summary-report
     def summary
       date_timestamp = Time.now.httpdate
-      signature = self.build_signature('/summary', nil, 'GET', date_timestamp) 
+      signature = self.build_signature('/summary', nil, 'GET', date_timestamp)
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
       authorization_header = "VWS " + @accesskey + ":" + signature
       begin
         RestClient.get(SUMMARY_URL, :'Date' => date_timestamp, 
@@ -141,6 +143,7 @@ module Vws
       target_id_url = TARGETS_URL + '/' + target_id
       target_id_suburl = '/targets' + '/' + target_id
       signature = self.build_signature(target_id_suburl, nil, 'GET', date_timestamp)
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
       authorization_header = "VWS " + @accesskey + ":" + signature
       begin
         RestClient.get(target_id_url, :'Date' => date_timestamp,
@@ -172,8 +175,8 @@ module Vws
       target_id_suburl = '/targets' + '/' + target_id
       body_hash = {:active_flag => active_flag}
       signature = self.build_signature(target_id_suburl, body_hash, 'PUT', date_timestamp)
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
       authorization_header = "VWS " + @accesskey + ":" + signature
-     
       begin
         RestClient.put(target_id_url, body_hash.to_json, 
                                       :'Date' => date_timestamp, 
@@ -208,6 +211,7 @@ module Vws
               target_id_url = TARGETS_URL + '/' + target_id
               target_id_suburl = '/targets' + '/' + target_id
               signature = self.build_signature(target_id_suburl, nil, 'DELETE', date_timestamp)
+              raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
               authorization_header = "VWS " + @accesskey + ":" + signature
                 begin
                   RestClient.delete(target_id_url, 
@@ -235,6 +239,7 @@ module Vws
       target_id_suburl = '/duplicates' + '/' + target_id
 
       signature = self.build_signature(target_id_suburl, nil, 'GET', date_timestamp)
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
       authorization_header = "VWS " + @accesskey + ":" +  signature
       begin
         RestClient.get(target_id_url, :'Date' => date_timestamp, 
