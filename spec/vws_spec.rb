@@ -51,8 +51,8 @@ describe Vws do
   
   describe "should retrieve a single target info" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "Info for targetid = ee408e0b9d054a04b0df85e0642494d2 \n"
-    response = conn.retrieve_target("ee408e0b9d054a04b0df85e0642494d2")
+    puts "Info for targetid = your_test_target_id \n"
+    response = conn.retrieve_target("your_test_target_id")
     puts JSON.pretty_generate(JSON.parse(response))
   end
   
@@ -60,8 +60,8 @@ describe Vws do
    
    describe "should retrieve a summary report of a single target" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "Summary report targetid =  4098a76b155a4bfc9331f9ea4e858636 \n"
-    response = conn.target_summary("4098a76b155a4bfc9331f9ea4e858636")
+    puts "Summary report targetid =  your_test_target_id \n"
+    response = conn.target_summary("your_test_target_id")
     puts JSON.pretty_generate(JSON.parse(response))
   end
   
@@ -69,8 +69,8 @@ describe Vws do
   
   describe "delete target" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "What happens if try to delete a file with targetid =   4098a76b155a4bfc9331f9ea4e858636 ?: \n"
-    response = conn.delete_target("4098a76b155a4bfc9331f9ea4e8536")
+    puts "What happens if try to delete a file with targetid = your_test_target_id ?: \n"
+    response = conn.delete_target("your_test_target_id")
     puts JSON.pretty_generate(JSON.parse(response))
   end
     
@@ -78,8 +78,8 @@ describe Vws do
    
    describe "set active to false" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "Set target to false for targetid = ee408e0b9d054a04b0df85e0642494d2 \n"
-    response = conn.set_active_flag("ee408e0b9d054a04b0df85e0642494d2", false)
+    puts "Set target to false for targetid = your_test_target_id \n"
+    response = conn.set_active_flag("your_test_target_id", false)
     puts JSON.pretty_generate(JSON.parse(response))
   end
     
