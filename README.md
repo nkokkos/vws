@@ -51,18 +51,18 @@ The gem has been uploaded to rubygems.org (http://rubygems.org/gems/vws), theref
 and you'll be set.
 
 
-## Usage
+## Usage:
 
 Instantiate a connection to the api with:
 
     connection = Vws::Api.new("your_server_vws_access_key", "your_server_vws_secret_key")
 
 After a successful connection, you should have access to the vuforia api as shown here:
-https://developer.vuforia.com/resources/dev-guide/managing-targets-cloud-database-using-developer-api
+https://developer.vuforia.com/library//articles/Solution/How-To-Use-the-Vuforia-Web-Services-API
 
 So, if you want to get a summary of the cloud database, you issue:
 
-     connection.summary
+    connection.summary
 
 For a list of targets in your database:
 
@@ -116,8 +116,7 @@ in this gem.
 
 ## To do:
 
-  Implement some of the new vws apis and write better documentation :-)
-  .
+  Implement some of the new vws apis
 
 ## Contributing
 
