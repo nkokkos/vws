@@ -78,7 +78,8 @@ To activate or deactivate a target:
 
 To add a target to the database:
 
-    connection.add_target(target_name, file_path, width, active_flag)
+    connection.add_target(target_name, file_path, width, active_flag, application_metadata)
+You may set application_metadata = nil if you do not use this attribute
 
 To delete a target:
     
