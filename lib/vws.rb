@@ -56,6 +56,7 @@ module Vws
 
     # Calls the api end point for the list of targets associated with 
     # server access key and cloud database
+    # https://developer.vuforia.com/library/articles/Solution/How-To-Get-a-Target-List-for-a-Cloud-Database-Using-the-VWS-API
     def list_targets
       #Date is the current date per RFC 2616, section 3.3.1, 
       #rfc1123-date format, e.g.: Sun, 22 Apr #2012 08:49:37 GMT.
@@ -73,7 +74,7 @@ module Vws
       end
     end
 
-    def add_target(target_name, file_path, width, active_flag)
+    def add_target(target_name, file_path, width, active_flag, application_metadata=nil)
       raise "file path is required"   if file_path.nil?
       raise "target name is required" if target_name.nil?
       date_timestamp = Time.now.httpdate 
@@ -97,7 +98,10 @@ module Vws
       end
     end
     
+    # Updates an existing target. Target_id must already exist
+    # https://developer.vuforia.com/library/articles/Solution/How-To-Update-a-Target-Using-the-VWS-API
     def update_target(target_id, target_name=nil, file_path=nil, width=nil, active_flag=nil)
+      raise "target id should be be nil" if target_id == nil
       date_timestamp = Time.now.httpdate
       target_id_url = TARGETS_URL + '/' + target_id
       target_id_suburl = '/targets' + '/' + target_id  
@@ -189,7 +193,7 @@ module Vws
     end
 
     # Delete a target in a cloud database
-    # https://developer.vuforia.com/resources/dev-guide/deleting-target-cloud-database
+    # https://developer.vuforia.com/library/articles/Solution/How-To-Delete-a-Target-Using-the-VWS-API
     def delete_target(target_id)
       # In order to delete the target, we have to set it to non-active.
       # Therefore,first retrieve target info and act accordingly to target info
