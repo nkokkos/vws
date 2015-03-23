@@ -98,7 +98,7 @@ List duplicates for target:
 
 ## Attributes of the uploaded file:
 Vuforia has a great article about what makes a target ideal:
-https://developer.vuforia.com/library/articles/Best_Practices/Best-Practices-for-using-the-VWS-API.
+https://developer.vuforia.com/library/articles/Best_Practices/Attributes-of-an-Ideal-Image-Target
 Currently, this ruby gem does not check for file size or any other attributes addressed in the article above.
 
 
