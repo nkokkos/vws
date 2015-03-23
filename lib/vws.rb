@@ -80,10 +80,14 @@ module Vws
       date_timestamp = Time.now.httpdate 
       #for file uploads, read file contents data and Base 64 encode it:
       contents_encoded = Base64.encode64(File.open(file_path, 'rb').read)
-      body_hash = { :name => target_name, 
+      application_metadata_encoded = Base64.encode64(application_metadata.to_s)
+      body_hash = { 
+                    :name => target_name, 
                     :width => width, #width of the target in scene units
                     :image => contents_encoded, 
-                    :active_flag => active_flag }
+                    :active_flag => active_flag, 
+                    :application_metadata => application_metadata_encoded 
+                  }
       signature = self.build_signature('/targets', body_hash, 'POST', date_timestamp)
       raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
       authorization_header = "VWS " + @accesskey + ":" +  signature
@@ -100,17 +104,21 @@ module Vws
     
     # Updates an existing target. Target_id must already exist
     # https://developer.vuforia.com/library/articles/Solution/How-To-Update-a-Target-Using-the-VWS-API
-    def update_target(target_id, target_name=nil, file_path=nil, width=nil, active_flag=nil)
-      raise "target id should be be nil" if target_id == nil
+    def update_target(target_id, target_name=nil, file_path=nil, width=nil, active_flag=nil,application_metadata=nil)
+      raise "target id should not be nil" if target_id == nil
       date_timestamp = Time.now.httpdate
       target_id_url = TARGETS_URL + '/' + target_id
       target_id_suburl = '/targets' + '/' + target_id  
       #for file uploads, read file contents data and Base 64 encode it:
       contents_encoded = Base64.encode64(File.open(file_path, 'rb').read)
-      body_hash = { :name => target_name, 
+      application_metadata_encoded = Base64.encode64(application_metadata.to_s)
+      body_hash = { 
+		    :name => target_name, 
                     :width => width, #Width of the target in scene unit
                     :image => contents_encoded, 
-                    :active_flag => active_flag }
+                    :active_flag => active_flag,
+                    :application_metadata => application_metadata_encoded
+  		  }
       signature = self.build_signature(target_id_suburl, body_hash, 'PUT', date_timestamp)
       raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
       authorization_header = "VWS " + @accesskey + ":" +  signature

@@ -2,31 +2,18 @@ require_relative '../lib/vws.rb'
 
 describe Vws do
 
-  VWS_ACCESSKEY = "your_vws_server_database_access_key"
-  VWS_SECRETKEY = "your_vws_server_database_secret_key"
- 
+  VWS_ACCESSKEY = "your_access_key"
+  VWS_SECRETKEY = "your_secret_key"
   
-#code below between begin and end was an attempt to read env variables from file
-=begin
-  describe "should connect to webservice and fail otherwise" do
-    YAML.load(File.open('spec/local_env.yml')).each do |key, value|
-      ENV[key.to_s] = value
-     end if File.exists?('spec/local_env.yml')
-       if defined?(ENV['VWS_ACCESSKEY']) && defined?(ENV['VWS_SECRETKEY'])
-         conn = Vws::Api.new(ENV['VWS_ACCESSKEY'], ENV['VWS_SECRETKEY'])
-         conn.inspect
-         #puts conn.list_targets
-         else
-         puts "ENV['VWS_ACCESSKEY'] && ENV['VWS_SECRETKEY' not defined"
-       end
-    end
-=end 
+  TARGET_ID_TO_DELETE = "a_target_id_to_delete"
+  TARGET_ID_TO_GET_INFO_ON = "a_target_to_get_info_on"
+  TARGET_ID_TO_SET_TO_FALSE = "a_target_id_to_set_to_false"
 
   describe "should connect to webservice and show summary of the cloud database" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
     puts "Summary of the target database: \n"
     response = conn.summary
-	puts JSON.pretty_generate(JSON.parse(response))
+    puts JSON.pretty_generate(JSON.parse(response))
   end
 
   puts "\n"
@@ -43,7 +30,7 @@ describe Vws do
   describe "should connect to webservice, upload file and fail if the file name is the same" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
     puts "Response after trying to add a file: \n"
-    response = conn.add_target("newtargetname", "spec/RGB_24bits.jpg", 150, true)
+    response = conn.add_target("newtargetname", "spec/RGB_24bits.jpg", 150, true,nil)
     puts JSON.pretty_generate(JSON.parse(response))
   end
     
@@ -51,26 +38,17 @@ describe Vws do
   
   describe "should retrieve a single target info" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "Info for targetid = your_test_target_id \n"
-    response = conn.retrieve_target("your_test_target_id")
+    puts "Retrieve Info for targetid = #{TARGET_ID_TO_GET_INFO_ON}"
+    response = conn.retrieve_target("test")
     puts JSON.pretty_generate(JSON.parse(response))
   end
   
     puts "\n"
    
-   describe "should retrieve a summary report of a single target" do
-    conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "Summary report targetid =  your_test_target_id \n"
-    response = conn.target_summary("your_test_target_id")
-    puts JSON.pretty_generate(JSON.parse(response))
-  end
-  
-  puts '/n'
-  
   describe "delete target" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "What happens if try to delete a file with targetid = your_test_target_id ?: \n"
-    response = conn.delete_target("your_test_target_id")
+    puts "Deleting target id #{TARGET_ID_TO_DELETE}" 
+    response = conn.delete_target(TARGET_ID_TO_DELETE)
     puts JSON.pretty_generate(JSON.parse(response))
   end
     
@@ -78,8 +56,8 @@ describe Vws do
    
    describe "set active to false" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
-    puts "Set target to false for targetid = your_test_target_id \n"
-    response = conn.set_active_flag("your_test_target_id", false)
+    puts "Set target to false for targetid #{TARGET_ID_TO_SET_TO_FALSE}"
+    response = conn.set_active_flag(TARGET_ID_TO_SET_TO_FALSE, false)
     puts JSON.pretty_generate(JSON.parse(response))
   end
     
@@ -88,7 +66,7 @@ describe Vws do
    describe "should connect to webservice, upload Pitt picture and fail if the file name is the same" do
     conn = Vws::Api.new(VWS_ACCESSKEY, VWS_SECRETKEY)
     puts "Add Brat Pitt Picture: \n"
-    response = conn.add_target("pitt", "spec/pitt.jpg", 210, true)
+    response = conn.add_target("pitt", "spec/pitt.jpg", 210, true, nil)
     puts JSON.pretty_generate(JSON.parse(response))
   end
   
