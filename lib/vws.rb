@@ -94,7 +94,7 @@ module Vws
       body_hash = { 
                     :name => target_name, 
                     :width => width, #width of the target in scene units
-                    :image => contents_encoded, 
+                    :image => file_contents_encoded, 
                     :active_flag => active_flag, 
                     :application_metadata => application_metadata_encoded 
                   }
