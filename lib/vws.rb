@@ -74,12 +74,22 @@ module Vws
       end
     end
 
+    #For file uploads and application data, read file contents data and Base 64:
+    #Raise exceptions if file or target name are nil
     def add_target(target_name, file_path, width, active_flag, application_metadata=nil)
       raise "file path is required"   if file_path.nil?
       raise "target name is required" if target_name.nil?
       date_timestamp = Time.now.httpdate 
-      #for file uploads, read file contents data and Base 64 encode it:
-      contents_encoded = Base64.encode64(File.open(file_path, 'rb').read)
+      #it's kind of verbose with exceptions but need to close the file after reading it:
+      begin 
+        file = File.new(file_path,'rb')
+        file_contents = file.read
+        file.close
+      rescue => err
+        puts "Exception on file: #{err}"
+      	return
+      end
+      file_contents_encoded = Base64.encode64(file_contents) # Base64.encoded expects input to be string
       application_metadata_encoded = Base64.encode64(application_metadata.to_s)
       body_hash = { 
                     :name => target_name, 
