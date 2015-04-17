@@ -13,6 +13,7 @@ module Vws
    BASE_URL = "https://vws.vuforia.com"
    TARGETS_URL = BASE_URL + "/targets"
    SUMMARY_URL = BASE_URL + "/summary"
+   DUPLICATES_URL = BASE_URL + "/duplicates"
 
   class Api
   
@@ -39,7 +40,7 @@ module Vws
         # json body data
         hexDigest = Digest::MD5.hexdigest(body_hash.to_json)
       else 
-        puts "Invalid request method";
+        puts "Invalid request method for signature method: " + http_verb
         return nil
       end
       
@@ -55,12 +56,15 @@ module Vws
 
     # Calls the api end point for the list of targets associated with 
     # server access key and cloud database
+    # https://developer.vuforia.com/library/articles/Solution/How-To-Get-a-Target-List-for-a-Cloud-Database-Using-the-VWS-API
     def list_targets
       #Date is the current date per RFC 2616, section 3.3.1, 
       #rfc1123-date format, e.g.: Sun, 22 Apr #2012 08:49:37 GMT.
       date_timestamp = Time.now.httpdate #ruby provides this date format 
                                          #with httpdate method
       signature = self.build_signature('/targets', nil, 'GET', date_timestamp)
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
+      
       authorization_header = "VWS " + @accesskey + ":" +  signature
       begin
         RestClient.get(TARGETS_URL, :'Date' => date_timestamp, 
@@ -70,17 +74,32 @@ module Vws
       end
     end
 
-    def add_target(target_name, file_path, width, active_flag)
+    #For file uploads and application data, read file contents data and Base 64:
+    #Raise exceptions if file or target name are nil
+    def add_target(target_name, file_path, width, active_flag, application_metadata=nil)
       raise "file path is required"   if file_path.nil?
       raise "target name is required" if target_name.nil?
       date_timestamp = Time.now.httpdate 
-      #for file uploads, read file contents data and Base 64 encode it:
-      contents_encoded = Base64.encode64(File.open(file_path, 'rb').read)
-      body_hash = { :name => target_name, 
+      #it's kind of verbose with exceptions but need to close the file after reading it:
+      begin 
+        file = File.new(file_path,'rb')
+        file_contents = file.read
+        file.close
+      rescue => err
+        puts "Exception on file: #{err}"
+      	return
+      end
+      file_contents_encoded = Base64.encode64(file_contents) # Base64.encoded expects input to be string
+      application_metadata_encoded = Base64.encode64(application_metadata.to_s)
+      body_hash = { 
+                    :name => target_name, 
                     :width => width, #width of the target in scene units
-                    :image => contents_encoded, 
-                    :active_flag => active_flag }
+                    :image => file_contents_encoded, 
+                    :active_flag => active_flag, 
+                    :application_metadata => application_metadata_encoded 
+                  }
       signature = self.build_signature('/targets', body_hash, 'POST', date_timestamp)
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
       authorization_header = "VWS " + @accesskey + ":" +  signature
       begin
         RestClient.post(TARGETS_URL, body_hash.to_json, 
@@ -93,17 +112,25 @@ module Vws
       end
     end
     
-    def update_target(target_id, target_name=nil, file_path=nil, width=nil, active_flag=nil)
+    # Updates an existing target. Target_id must already exist
+    # https://developer.vuforia.com/library/articles/Solution/How-To-Update-a-Target-Using-the-VWS-API
+    def update_target(target_id, target_name=nil, file_path=nil, width=nil, active_flag=nil,application_metadata=nil)
+      raise "target id should not be nil" if target_id == nil
       date_timestamp = Time.now.httpdate
       target_id_url = TARGETS_URL + '/' + target_id
       target_id_suburl = '/targets' + '/' + target_id  
       #for file uploads, read file contents data and Base 64 encode it:
       contents_encoded = Base64.encode64(File.open(file_path, 'rb').read)
-      body_hash = { :name => target_name, 
+      application_metadata_encoded = Base64.encode64(application_metadata.to_s)
+      body_hash = { 
+		    :name => target_name, 
                     :width => width, #Width of the target in scene unit
                     :image => contents_encoded, 
-                    :active_flag => active_flag }
+                    :active_flag => active_flag,
+                    :application_metadata => application_metadata_encoded
+  		  }
       signature = self.build_signature(target_id_suburl, body_hash, 'PUT', date_timestamp)
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
       authorization_header = "VWS " + @accesskey + ":" +  signature
       begin
         RestClient.put(target_id_url, body_hash.to_json, 
@@ -120,7 +147,8 @@ module Vws
     # https://developer.vuforia.com/resources/dev-guide/database-summary-report
     def summary
       date_timestamp = Time.now.httpdate
-      signature = self.build_signature('/summary', nil, 'GET', date_timestamp) 
+      signature = self.build_signature('/summary', nil, 'GET', date_timestamp)
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
       authorization_header = "VWS " + @accesskey + ":" + signature
       begin
         RestClient.get(SUMMARY_URL, :'Date' => date_timestamp, 
@@ -137,6 +165,7 @@ module Vws
       target_id_url = TARGETS_URL + '/' + target_id
       target_id_suburl = '/targets' + '/' + target_id
       signature = self.build_signature(target_id_suburl, nil, 'GET', date_timestamp)
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
       authorization_header = "VWS " + @accesskey + ":" + signature
       begin
         RestClient.get(target_id_url, :'Date' => date_timestamp,
@@ -168,8 +197,8 @@ module Vws
       target_id_suburl = '/targets' + '/' + target_id
       body_hash = {:active_flag => active_flag}
       signature = self.build_signature(target_id_suburl, body_hash, 'PUT', date_timestamp)
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
       authorization_header = "VWS " + @accesskey + ":" + signature
-     
       begin
         RestClient.put(target_id_url, body_hash.to_json, 
                                       :'Date' => date_timestamp, 
@@ -182,7 +211,7 @@ module Vws
     end
 
     # Delete a target in a cloud database
-    # https://developer.vuforia.com/resources/dev-guide/deleting-target-cloud-database
+    # https://developer.vuforia.com/library/articles/Solution/How-To-Delete-a-Target-Using-the-VWS-API
     def delete_target(target_id)
       # In order to delete the target, we have to set it to non-active.
       # Therefore,first retrieve target info and act accordingly to target info
@@ -204,6 +233,7 @@ module Vws
               target_id_url = TARGETS_URL + '/' + target_id
               target_id_suburl = '/targets' + '/' + target_id
               signature = self.build_signature(target_id_suburl, nil, 'DELETE', date_timestamp)
+              raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
               authorization_header = "VWS " + @accesskey + ":" + signature
                 begin
                   RestClient.delete(target_id_url, 
@@ -221,6 +251,23 @@ module Vws
         end
       else
         return {:result_code => "AuthenticationFailure"}.to_json
+      end
+    end
+
+    def list_duplicates(target_id)
+      date_timestamp = Time.now.httpdate
+
+      target_id_url = DUPLICATES_URL + '/' + target_id
+      target_id_suburl = '/duplicates' + '/' + target_id
+
+      signature = self.build_signature(target_id_suburl, nil, 'GET', date_timestamp)
+      raise ArgumentError.new('Signature returned nil. Aborting...') if signature == nil
+      authorization_header = "VWS " + @accesskey + ":" +  signature
+      begin
+        RestClient.get(target_id_url, :'Date' => date_timestamp, 
+                                      :'Authorization' => authorization_header)
+      rescue => e
+        e.response
       end
     end
   

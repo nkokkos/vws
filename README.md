@@ -54,18 +54,18 @@ The gem has been uploaded to rubygems.org (http://rubygems.org/gems/vws), theref
 and you'll be set.
 
 
-## Usage
+## Usage:
 
 Instantiate a connection to the api with:
 
     connection = Vws::Api.new("your_server_vws_access_key", "your_server_vws_secret_key")
 
 After a successful connection, you should have access to the vuforia api as shown here:
-https://developer.vuforia.com/resources/dev-guide/managing-targets-cloud-database-using-developer-api
+https://developer.vuforia.com/library//articles/Solution/How-To-Use-the-Vuforia-Web-Services-API
 
 So, if you want to get a summary of the cloud database, you issue:
 
-     connection.summary
+    connection.summary
 
 For a list of targets in your database:
 
@@ -81,7 +81,8 @@ To activate or deactivate a target:
 
 To add a target to the database:
 
-    connection.add_target(target_name, file_path, width, active_flag)
+    connection.add_target(target_name, file_path, width, active_flag, application_metadata)
+You may set application_metadata = nil if you do not use this attribute
 
 To delete a target:
     
@@ -93,6 +94,15 @@ wait for a while:
 Change a target flag to inactive/active:
     
     connection.set_active_flag(target_id, active_flag), where active_flag=true/false
+
+List duplicates for target:
+
+    connection.list_duplicates(target_id)
+
+## Attributes of the uploaded file:
+Vuforia has a great article about what makes a target ideal:
+https://developer.vuforia.com/library/articles/Best_Practices/Attributes-of-an-Ideal-Image-Target
+Currently, this ruby gem does not check for file size or any other attributes addressed in the article above.
 
 
 ## Spec
@@ -114,8 +124,7 @@ in this gem.
 
 ## To do:
 
-  Implement some of the new vws apis and write better documentation :-)
-
+  Implement some of the new vws apis
 
 ## Contributing
 
