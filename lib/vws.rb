@@ -1,4 +1,3 @@
-require "vws/version"
 require 'rubygems'
 require 'rest_client'
 require 'digest/md5'
@@ -6,16 +5,14 @@ require 'time'
 require 'openssl'
 require 'base64'
 require 'json'
-
+require 'vws'
+require 'vws/api_endpoint_constants'
 
 module Vws
-  #constants for end point interface links
-   BASE_URL = "https://vws.vuforia.com"
-   TARGETS_URL = BASE_URL + "/targets"
-   SUMMARY_URL = BASE_URL + "/summary"
-   DUPLICATES_URL = BASE_URL + "/duplicates"
 
   class Api
+
+    include ApiEndPointConstants
   
     def initialize(accesskey=nil, secretkey=nil)
       @accesskey = accesskey || ENV['VWS_ACCESSKEY']
