@@ -140,7 +140,7 @@ in this gem. More you can find here: https://developer.vuforia.com/library//arti
 ##Special thanks to 
 
 Everyone who has mentioned errors in the codes and especially to 
-https://github.com/ and https://github.com/jlitola for the PRs. 
+https://github.com/c0m3tx and https://github.com/jlitola for the PRs. 
 
 
 ## Contributing
