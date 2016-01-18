@@ -92,6 +92,28 @@ Change a target flag to inactive/active:
 List duplicates for target:
 
     connection.list_duplicates(target_id)
+    
+
+## Parsing the output:
+
+Response from the server is in JSON(text/string) format. So, you can easily parse the output and convert it to a Hash with keys. For example you may parse the output as such:
+
+    connection_hash = JSON.parse(connection)
+    
+Once you do that, you have access to the list of the hash's keys with
+    
+    connection_hash.keys
+    
+Then, you can grab the information relating to a certain key with:
+
+    connection_hash["key"]
+
+For example, here you can find the keys from the response after asking for the database summary:
+https://developer.vuforia.com/library/articles/Solution/How-To-Get-a-Database-Summary-Report-Using-the-VWS-API. 
+From that you can extract the name of the database with:
+
+    connection_hash["name"]
+
 
 ## Attributes of the uploaded file:
 Vuforia has a great article about what makes a target ideal:
