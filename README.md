@@ -1,16 +1,14 @@
 # Vws (Vuforia Web Services ruby gem for API access for target management)
 
 This is a ruby gem to interact with Vuforia web services api for managing the targets:
-https://developer.vuforia.com/resources/dev-guide/managing-targets-cloud-database-using-developer-api
+https://developer.vuforia.com/library//articles/Solution/How-To-Use-the-Vuforia-Web-Services-API
 
 It uses the excellent rest-client (https://github.com/rest-client/rest-client) to handle the
 HTTP/REST requests required by the Vuforia Web Services API.
 
 ## Installation from source:
 
-
 Clone this repo onto your hard drive and cd into the root folder.
-
 
 First install bundler gem (if it is not installed) by issuing:
 
@@ -25,7 +23,6 @@ Build the vws gem by:
     rake build
 
 This will build the vws.gem into the pkg folder.
-
 
 Install the gem from the pkg folder by:
 
@@ -58,7 +55,7 @@ Instantiate a connection to the api with:
     connection = Vws::Api.new("your_server_vws_access_key", "your_server_vws_secret_key")
 
 After a successful connection, you should have access to the vuforia api as shown here:
-https://developer.vuforia.com/library//articles/Solution/How-To-Use-the-Vuforia-Web-Services-API
+https://developer.vuforia.com/library/articles/Solution/How-To-Use-the-Vuforia-Web-Services-API
 
 So, if you want to get a summary of the cloud database, you issue:
 
@@ -115,13 +112,7 @@ of the folder by issuing:
 Setting a target from on to off and vice versa takes some time. It may take up to
 0-10 minutes and it's based on Vuforia's infrastucture. It is your responsibilty 
 to poll for the changes on the target since no such feature has been implemented
-in this gem.
-
-
-
-## To do:
-
-  Implement some of the new vws apis
+in this gem. More you can find here: https://developer.vuforia.com/library//articles/Best_Practices/Best-Practices-for-using-the-VWS-API
 
 ## Contributing
 
