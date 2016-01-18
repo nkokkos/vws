@@ -136,6 +136,13 @@ Setting a target from on to off and vice versa takes some time. It may take up t
 to poll for the changes on the target since no such feature has been implemented
 in this gem. More you can find here: https://developer.vuforia.com/library//articles/Best_Practices/Best-Practices-for-using-the-VWS-API
 
+
+##Special thanks to 
+
+Everyone who has mentioned errors in the codes and especially to 
+https://github.com/ and https://github.com/jlitola for the PRs. 
+
+
 ## Contributing
 
 Please, if you use it, report back any bugs/problems.
