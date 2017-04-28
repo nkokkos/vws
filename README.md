@@ -1,5 +1,7 @@
 # Vws (Vuforia Web Services ruby gem for API access for target management)
 
+[![Join the chat at https://gitter.im/nkokkos/vws](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nkokkos/vws?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This is a ruby gem to interact with Vuforia web services api for managing the targets:
 https://developer.vuforia.com/library//articles/Solution/How-To-Use-the-Vuforia-Web-Services-API
 
