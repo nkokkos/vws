@@ -4,6 +4,7 @@ require 'rest_client'
 require 'digest/md5'
 require 'time'
 require 'openssl'
+require 'open-uri'
 require 'base64'
 require 'json'
 
