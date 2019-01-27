@@ -1,4 +1,4 @@
-  require "vws/version"
+require "vws/version"
 require 'rubygems'
 require 'rest_client'
 require 'digest/md5'
@@ -111,7 +111,7 @@ module Vws
       body_hash = {}.merge( target_name ? { :name => target_name } : {} )
       body_hash = body_hash.merge( width ? { :width => width } : {} )
       body_hash = body_hash.merge( contents_encoded ? { :image => contents_encoded } : {} )
-      body_hash = body_hash.merge( active_flag ? { :active_flag => active_flag } : {} )
+      body_hash = body_hash.merge( !active_flag.nil? ? { :active_flag => active_flag } : {} )
       body_hash = body_hash.merge( metadata_encoded ? { :application_metadata => metadata_encoded } : {} )
 
       signature = self.build_signature(target_id_suburl, body_hash, 'PUT', date_timestamp)
