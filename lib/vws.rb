@@ -6,6 +6,7 @@ require 'time'
 require 'openssl'
 require 'base64'
 require 'json'
+require 'open-uri'
 
 
 module Vws
