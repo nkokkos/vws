@@ -1,4 +1,4 @@
-(start preparing for next version)
+# Gem is archived. If you want to continue, you are welcome to do so
 
 # Vws (Vuforia Web Services ruby gem for API access for target management)
 
